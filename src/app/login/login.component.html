@@ -1,0 +1,29 @@
+<div fxLayoutAlign="center center" fxFlexFill><img src="../assets/floppa.jpg"></div>
+
+<div fxLayoutAlign="center center" fxFlexFill>
+  <mat-card fxFlex="25">
+    <form fxLayoutAlign="stretch" fxLayout="column">
+        <h3>Email</h3>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="sample@mail.com">
+      </mat-form-field>
+      <h3>Password</h3>
+      <mat-form-field appearance="fill" required>
+          <mat-label>Enter your password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+      </mat-form-field>
+
+      <form action="/home" fxLayoutAlign="stretch" fxLayout="column">
+        <button mat-raised-button color="accent" type="submit">Login</button>
+    </form>
+    <form action="/register" fxLayoutAlign="stretch" fxLayout="column">
+        <button mat-raised-button color="accent" type="submit">Register</button>
+    </form>
+    </form>
+  </mat-card>
+</div>
