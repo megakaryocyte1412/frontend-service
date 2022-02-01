@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,16 +11,48 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
   hide = true;
 
-  public loginResponse: string | undefined;
+  profileForm!: FormGroup;
 
-  constructor() { }
+  get email() { return this.profileForm.get('email'); } 
+  get password() { return this.profileForm.get('password'); } 
 
+  constructor(private http:HttpClient, private router: Router) { 
+  }
   ngOnInit(): void {
-    this.loginResponse = 'success';
+    this.profileForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required
+      ])
+    });
   }
 
-  onSubmit(): boolean {
-    //https://www.ninenik.com/%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99_HttpClient_%E0%B8%95%E0%B8%B4%E0%B8%94%E0%B8%95%E0%B9%88%E0%B8%AD%E0%B8%81%E0%B8%B1%E0%B8%9A_backend_service_%E0%B9%83%E0%B8%99_Angular_%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88_1-852.html
-   return true;
+  onSubmit() {
+    console.log(this.profileForm.value);
+    this.http.post("http://localhost:8080/rest/api/user/login",
+    {
+        "email": this.profileForm.get('email')!.value,
+        "password": this.profileForm.get('password')!.value
+    })
+    .subscribe(
+        (val) => {
+            console.log("POST call successful value returned in body", 
+                        val);
+                        this.router.navigate(['/home']);
+        },
+        response => {
+            console.log("POST call in error", response);
+            this.profileForm.reset();
+        },
+        () => {
+            console.log("The POST observable is now completed.");
+        });
+  }
+
+  goRegister(): void {
+    this.router.navigate(['/register'])
   }
 }

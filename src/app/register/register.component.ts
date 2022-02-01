@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
 import { Router } from '@angular/router';
 
@@ -18,21 +18,32 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  profileForm = this.fb.group({
-    email: ['', Validators.required],
-    password: ['', Validators.required]
-  });
 
-  constructor(private fb: FormBuilder, private http:HttpClient, private router: Router) { 
+  profileForm!: FormGroup;
+
+  get email() { return this.profileForm.get('email'); } 
+  get password() { return this.profileForm.get('password'); } 
+  get passwordConfirm() { return this.profileForm.get('passwordConfirm'); } 
+
+  constructor(private http:HttpClient, private router: Router) { 
   }
   ngOnInit(): void {
+    this.profileForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+      ]),
+      passwordConfirm: new FormControl('', [
+      ])
+    });
   }
 
-
   onSubmit() {
-    // TODO: Use EventEmitter with form value
     console.log(this.profileForm.value);
-
     this.http.post("http://localhost:8080/rest/api/user/register",
     {
         "email": this.profileForm.get('email')!.value,
@@ -52,5 +63,6 @@ export class RegisterComponent implements OnInit {
             console.log("The POST observable is now completed.");
         });
   }
+
 
 }
