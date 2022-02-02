@@ -13,10 +13,10 @@ export class LoginComponent implements OnInit {
 
   profileForm!: FormGroup;
 
-  get email() { return this.profileForm.get('email'); } 
-  get password() { return this.profileForm.get('password'); } 
+  get email() { return this.profileForm.get('email'); }
+  get password() { return this.profileForm.get('password'); }
 
-  constructor(private http:HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
   }
   ngOnInit(): void {
     this.profileForm = new FormGroup({
@@ -33,22 +33,23 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     console.log(this.profileForm.value);
     this.http.post("http://localhost:8080/rest/api/user/login",
-    {
+      {
         "email": this.profileForm.get('email')!.value,
         "password": this.profileForm.get('password')!.value
-    })
-    .subscribe(
+      })
+      .subscribe(
         (val) => {
-            console.log("POST call successful value returned in body", 
-                        val);
-                        this.router.navigate(['/home']);
+          console.log("POST call successful value returned in body",
+            val);
+          this.router.navigate(['/home']);
         },
         response => {
-            console.log("POST call in error", response);
-            this.profileForm.reset();
+          console.log("POST call in error", response);
+          window.alert("The user name or password is invalid");
+          this.profileForm.reset();
         },
         () => {
-            console.log("The POST observable is now completed.");
+          console.log("The POST observable is now completed.");
         });
   }
 

@@ -1,0 +1,45 @@
+<div fxLayoutAlign="center center" fxFlexFill>
+
+    <mat-card fxFlex="25">
+
+        <form [formGroup]="partyForm" (ngSubmit)="onSubmit()" fxFlexFill fxLayoutAlign="stretch" fxLayout="column">
+            <h3>Owner Email</h3>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="sample@mail.com" formControlName="email">
+                <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert alert-danger">
+                    <div *ngIf="email!.errors?.['required']">
+                        Email is required.
+                    </div>
+                </div>
+            </mat-form-field>
+
+
+            <h3>Party Name</h3>
+            <mat-form-field appearance="fill" required>
+                <mat-label>Enter your password</mat-label>
+                <input matInput formControlName="partyName" [type]="'text'">
+                <div *ngIf="partyName!.invalid && (partyName!.dirty || partyName!.touched)" class="alert alert-danger">
+                    <div *ngIf="partyName!.errors?.['required']">
+                        Party Name is required.
+                    </div>
+                </div>
+            </mat-form-field>
+
+            <h3>Party member</h3>
+            <mat-form-field appearance="fill" required>
+                <mat-label>Party member</mat-label>
+                <input matInput formControlName="maximumPartyMember" [type]="'text'">
+                <div *ngIf="maximumPartyMember!.invalid && (maximumPartyMember!.dirty || maximumPartyMember!.touched)" class="alert alert-danger">
+                    <div *ngIf="maximumPartyMember!.errors?.['required']">
+                        Party member is required.
+                    </div>
+                </div>
+            </mat-form-field>
+
+            <form action="/home" fxLayoutAlign="stretch" fxLayout="column">
+                <button mat-raised-button color="accent" (click)="onSubmit()">Create Party</button>
+            </form>
+        </form>
+    </mat-card>
+</div>

@@ -57,6 +57,7 @@ export class RegisterComponent implements OnInit {
         },
         response => {
             console.log("POST call in error", response);
+            window.alert("register fail please try again later!");
             this.profileForm.reset();
         },
         () => {

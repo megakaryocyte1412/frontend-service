@@ -15,13 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
 import {HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { CreatePartyComponent } from './create-party/create-party.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    CreatePartyComponent
   ],
   imports: [
     BrowserModule

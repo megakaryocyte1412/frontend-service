@@ -1,1 +1,27 @@
-<p>home works!</p>
+<form action="/register" fxLayoutAlign="stretch" fxLayout="column">
+    <button mat-raised-button color="accent" (click)="goCreateParty()">Create Party</button>
+</form>
+
+<div *ngIf="partyResponseList!.length==0">
+    <div>
+        No Party please create the first party UwU
+    </div>
+</div>
+
+<ul>
+    <li *ngFor="let party of partyResponseList">
+        <mat-card class="example-card">
+            <mat-card-title-group>
+                <mat-card-title>Party Name: {{ party.partyName }}</mat-card-title>
+                <mat-card-subtitle>Party ID: {{ party.partyId }}</mat-card-subtitle>
+                <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            </mat-card-title-group>
+            <mat-card-content>
+                {{ party.currentMember }}/{{ party.memberLimit }}
+            </mat-card-content>
+            <form action="/register" fxLayoutAlign="stretch" fxLayout="column">
+                <button mat-raised-button color="accent">Join</button>
+            </form>
+        </mat-card>
+    </li>
+</ul>
