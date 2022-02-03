@@ -15,6 +15,6 @@ input.example-right-align {
     -moz-appearance: textfield;
 }
 
-alert-danger {
+error-message {
     color: red;
 }

@@ -1,48 +1,54 @@
 <div fxLayoutAlign="center center" fxFlexFill>
     <mat-card fxFlex="25">
-        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" fxFlexFill>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" type="email" formControlName="email" fxLayout="column" placeholder="Email">
-                <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert-danger">
-                    <div *ngIf="email!.errors?.['required']">
+        <form [formGroup]="profileForm" fxFlexFill fxLayoutAlign="stretch" fxLayout="column">
+            <h2 style="text-align: center;">Register</h2>
+
+
+            <h3>Email</h3>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input matInput placeholder="sample@mail.com" formControlName="email">
+                <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert alert-danger">
+                    <div *ngIf="email!.errors?.['required']" class="error-message">
                         Email is required.
                     </div>
                     <div *ngIf="email!.errors?.['email']">
                         Email is invalid email format.
                     </div>
                 </div>
-            </div>
+            </mat-form-field>
 
 
-            <label for="password">Password</label>
-
-            <input id="password" formControlName="password" fxLayout="column" placeholder="Password" matInput [type]="hide ? 'password' : 'text'">
-            <div *ngIf="password!.invalid && (password!.dirty || password!.touched)" class="alert-danger">
-                <div *ngIf="password!.errors?.['required']">
-                    Password is required.
+            <h3>Password</h3>
+            <mat-form-field appearance="fill" required>
+                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+                <div *ngIf="password!.invalid && (password!.dirty || password!.touched)" class="alert alert-danger">
+                    <div *ngIf="password!.errors?.['required']">
+                        Password is required
+                    </div>
+                    <div *ngIf="password!.errors?.['pattern']">
+                        The password must be at minimum 8 characters, contain at least one letter, one number and contain one special character
+                    </div>
                 </div>
-                <div *ngIf="password!.errors?.['pattern']">
-                    The password must be at minimum 8 characters, contain at least one letter, one number and contain one special character
-                </div>
-            </div>
-            <!-- <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide">
-        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button> -->
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+            </mat-form-field>
 
-            <label for="passwordConfirm">Confirm Password</label>
-            <div class="form-group">
-                <input type="password" formControlName="passwordConfirm" name="passwordConfirm" fxLayout="column" placeholder="Confirm Password" class="form-control" />
+            <h3>Confirm Password</h3>
+            <mat-form-field appearance="fill" required>
+                <input matInput formControlName="passwordConfirm" name="passwordConfirm" [type]="hide2 ? 'password' : 'text'">
+
                 <div *ngIf="password!.value!=passwordConfirm!.value" class="alert alert-danger">
-                    Password & Confirm Password does not match.
+                    Password does not match.
                 </div>
-            </div>
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+                <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+            </mat-form-field>
 
-            <button mat-raised-button color="accent" type="submit" [disabled]="!profileForm.valid" fxLayout="column">Register</button>
+            <mat-checkbox class="tc-box" (click)="checkbox=true">I accept all T&C</mat-checkbox>
+
+            <button mat-raised-button color="accent" type="submit" [disabled]="!profileForm.valid || !checkbox" (click)="onSubmit()" fxLayoutAlign="stretch" fxLayout="column">Register</button>
         </form>
 
 

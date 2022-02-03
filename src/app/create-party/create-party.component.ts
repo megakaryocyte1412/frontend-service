@@ -21,10 +21,6 @@ export class CreatePartyComponent implements OnInit {
   }
   ngOnInit(): void {
     this.partyForm = new FormGroup({
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
       partyName: new FormControl('', [
         Validators.required,
         Validators.maxLength(255)
@@ -33,6 +29,11 @@ export class CreatePartyComponent implements OnInit {
         Validators.required
       ])
     });
+
+    if (localStorage.getItem('email') == null) {
+      window.alert("Please login first");
+      this.router.navigate(['/login']);
+    }
   }
 
   onSubmit() {
@@ -40,7 +41,7 @@ export class CreatePartyComponent implements OnInit {
     this.http.post("http://localhost:8080/rest/api/party/create",
       {
         "partyName": this.partyForm.get('partyName')!.value,
-        "ownerEmail": this.partyForm.get('email')!.value,
+        "ownerEmail": localStorage.getItem('email'),
         "memberLimit": this.partyForm.get('maximumPartyMember')!.value,
       })
       .subscribe(

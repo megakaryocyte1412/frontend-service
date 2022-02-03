@@ -3,21 +3,10 @@
     <mat-card fxFlex="25">
 
         <form [formGroup]="partyForm" (ngSubmit)="onSubmit()" fxFlexFill fxLayoutAlign="stretch" fxLayout="column">
-            <h3>Owner Email</h3>
-            <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Email</mat-label>
-                <input matInput placeholder="sample@mail.com" formControlName="email">
-                <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert alert-danger">
-                    <div *ngIf="email!.errors?.['required']">
-                        Email is required.
-                    </div>
-                </div>
-            </mat-form-field>
-
 
             <h3>Party Name</h3>
             <mat-form-field appearance="fill" required>
-                <mat-label>Enter your password</mat-label>
+                <mat-label></mat-label>
                 <input matInput formControlName="partyName" [type]="'text'">
                 <div *ngIf="partyName!.invalid && (partyName!.dirty || partyName!.touched)" class="alert alert-danger">
                     <div *ngIf="partyName!.errors?.['required']">

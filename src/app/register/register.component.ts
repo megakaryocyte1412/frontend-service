@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from '@angular/router';
+
+const headers= new HttpHeaders()
+  .append('content-type', 'application/json')
+  .append('Access-Control-Allow-Origin', '*')
+  .append('Access-Control-Allow-Methods', 'POST')
+  .append('Authorization', 'Basic dXNlcjEyMzpQQHNzdzByZA==');
 
 interface User {
   email: string;
-  password:string;
+  password: string;
 }
 
 @Component({
@@ -15,19 +21,25 @@ interface User {
 })
 export class RegisterComponent implements OnInit {
   hide = true;
+  hide2 = true;
+  checkbox = false;
   loading = false;
   submitted = false;
 
 
   profileForm!: FormGroup;
 
-  get email() { return this.profileForm.get('email'); } 
-  get password() { return this.profileForm.get('password'); } 
-  get passwordConfirm() { return this.profileForm.get('passwordConfirm'); } 
+  get email() { return this.profileForm.get('email'); }
+  get password() { return this.profileForm.get('password'); }
+  get passwordConfirm() { return this.profileForm.get('passwordConfirm'); }
 
-  constructor(private http:HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
   }
   ngOnInit(): void {
+    if (localStorage.getItem('email') != null) {
+      this.router.navigate(['/home'])
+    }
+
     this.profileForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -38,30 +50,36 @@ export class RegisterComponent implements OnInit {
         Validators.pattern('^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
       ]),
       passwordConfirm: new FormControl('', [
+        Validators.required
       ])
     });
   }
 
   onSubmit() {
     console.log(this.profileForm.value);
-    this.http.post("http://localhost:8080/rest/api/user/register",
-    {
+    console.log(headers);
+    this.http.post(
+      "https://party-service.herokuapp.com/rest/api/user/register",
+      {
         "email": this.profileForm.get('email')!.value,
         "password": this.profileForm.get('password')!.value
-    })
-    .subscribe(
+      }
+      , {'headers':headers}
+      )
+      .subscribe(
         (val) => {
-            console.log("POST call successful value returned in body", 
-                        val);
-                        this.router.navigate(['/login']);
+          console.log("POST call successful value returned in body",
+            val);
+          window.alert("Register success !!");
+          this.router.navigate(['/login']);
         },
         response => {
-            console.log("POST call in error", response);
-            window.alert("register fail please try again later!");
-            this.profileForm.reset();
+          console.log("POST call in error", response);
+          window.alert("register fail please try again later!");
+          //this.profileForm.reset();
         },
         () => {
-            console.log("The POST observable is now completed.");
+          console.log("The POST observable is now completed.");
         });
   }
 

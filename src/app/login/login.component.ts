@@ -1,7 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    'Authorization': 'Basic ' + btoa('user123:P@ssw0rd')
+  })
+};
 
 @Component({
   selector: 'app-login',
@@ -19,6 +26,11 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {
   }
   ngOnInit(): void {
+    if (localStorage.getItem('email') != null) {
+      this.router.navigate(['/home'])
+    }
+
+
     this.profileForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -36,11 +48,12 @@ export class LoginComponent implements OnInit {
       {
         "email": this.profileForm.get('email')!.value,
         "password": this.profileForm.get('password')!.value
-      })
+      }, httpOptions)
       .subscribe(
         (val) => {
           console.log("POST call successful value returned in body",
             val);
+          localStorage.setItem('email', this.profileForm.get('email')!.value);
           this.router.navigate(['/home']);
         },
         response => {
