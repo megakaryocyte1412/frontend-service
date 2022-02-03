@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private http: HttpClient, private router: Router) { 
-    this.http.get<Party[]>("http://localhost:8080/rest/api/party")
+    this.http.get<Party[]>("https://party-service.herokuapp.com/rest/api/party")
     .subscribe(
       (val) => {
         console.log("GET call successful value returned in body",
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   }
 
   joinParty(partyId:string): void {
-    this.http.post("http://localhost:8080/rest/api/party/join",
+    this.http.post("https://party-service.herokuapp.com/rest/api/party/join",
       {
         "partyId": partyId,
         "email": localStorage.getItem('email')

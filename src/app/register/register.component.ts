@@ -3,11 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from '@angular/router';
 
-const headers= new HttpHeaders()
-  .append('content-type', 'application/json')
-  .append('Access-Control-Allow-Origin', '*')
-  .append('Access-Control-Allow-Methods', 'POST')
-  .append('Authorization', 'Basic dXNlcjEyMzpQQHNzdzByZA==');
+
 
 interface User {
   email: string;
@@ -57,14 +53,12 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     console.log(this.profileForm.value);
-    console.log(headers);
     this.http.post(
       "https://party-service.herokuapp.com/rest/api/user/register",
       {
         "email": this.profileForm.get('email')!.value,
         "password": this.profileForm.get('password')!.value
       }
-      , {'headers':headers}
       )
       .subscribe(
         (val) => {
@@ -76,7 +70,7 @@ export class RegisterComponent implements OnInit {
         response => {
           console.log("POST call in error", response);
           window.alert("register fail please try again later!");
-          //this.profileForm.reset();
+          this.profileForm.reset();
         },
         () => {
           console.log("The POST observable is now completed.");

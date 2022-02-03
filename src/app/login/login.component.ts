@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log(this.profileForm.value);
-    this.http.post("http://localhost:8080/rest/api/user/login",
+    this.http.post("https://party-service.herokuapp.com/rest/api/user/login",
       {
         "email": this.profileForm.get('email')!.value,
         "password": this.profileForm.get('password')!.value

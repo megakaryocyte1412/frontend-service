@@ -38,7 +38,7 @@ export class CreatePartyComponent implements OnInit {
 
   onSubmit() {
     console.log(this.partyForm.value);
-    this.http.post("http://localhost:8080/rest/api/party/create",
+    this.http.post("https://party-service.herokuapp.com/rest/api/party/create",
       {
         "partyName": this.partyForm.get('partyName')!.value,
         "ownerEmail": localStorage.getItem('email'),
